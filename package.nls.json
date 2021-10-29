@@ -1,0 +1,10 @@
+{
+    "yuque.viewsContainers.activitybar.title": "Yuque",
+    "yuque.views.welcome": "",
+    "yuque.views.docs": "Docs",
+    "yuque.views.repos": "Repos",
+    "yuque.views.groups": "Groups",
+    "yuque.views.profile": "Profile",
+    "yuque.viewsWelcome.docs.contents": "You have not yet added access token for Yuque.\n[Add Token](command:yuque.setToken)\nToken is used to access your private data, please keep it confidential. Reset if disclosed. [Read docs](https://www.yuque.com/settings/tokens).",
+    "yuque.inputBox.setToken": "Please input your yuque access token"
+}
