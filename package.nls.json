@@ -5,8 +5,10 @@
     "yuque.views.repos": "Repos",
     "yuque.views.groups": "Groups",
     "yuque.views.profile": "Profile",
-    "yuque.viewsWelcome.docs.contents": "You have not yet added access token for Yuque.\n[Add Token](command:yuque.setToken)\nToken is used to access your private data, please keep it confidential. Reset if disclosed. [Read docs](https://www.yuque.com/settings/tokens).",
+    "yuque.viewsWelcome.docs.contents": "You have not yet added token for Yuque.\n[Add Token](command:yuque.setToken)\nToken is used to access your private data, please keep it confidential. Reset if disclosed. [Read docs](https://www.yuque.com/settings/tokens).",
     "yuque.viewsWelcome.docs.contents.initializing": "Loading...",
-    "yuque.viewsWelcome.docs.contents.needsAuthentication": "You have not yet added access token for Yuque.\n[Add Token](command:yuque.setToken)\nToken is used to access your private data, please keep it confidential. Reset if disclosed. [Read docs](https://www.yuque.com/settings/tokens).",
-    "yuque.inputBox.setToken": "Please input your yuque access token"
+    "yuque.viewsWelcome.docs.contents.needsAuthentication": "You have not yet added token for Yuque.\n[Add Token](command:yuque.setToken)\nToken is used to access your private data, please keep it confidential. Reset if disclosed. [Read docs](https://www.yuque.com/settings/tokens).",
+    "yuque.inputBox.setToken": "Please input your yuque token",
+    "yuque.commands.setToken.title": "Set token",
+    "yuque.commands.logout.title": "Logout"
 }

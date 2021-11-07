@@ -10,14 +10,24 @@
 		"Other"
 	],
 	"activationEvents": [
-		"*"
+		"onView:yuque.welcome.initializing",
+		"onView:yuque.welcome.needsAuthentication",
+		"onView:yuque.welcome.recent",
+		"onView:yuque.welcome.repos",
+		"onView:yuque.welcome.groups",
+		"onView:yuque.welcome.profile"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
 				"command": "yuque.setToken",
-				"title": "Hello World"
+				"title": "%yuque.commands.setToken.title%"
+			},
+			{
+				"command": "yuque.logout",
+				"title": "%yuque.commands.logout.title%",
+				"icon": "$(log-out)"
 			}
 		],
 		"configuration": {
@@ -26,7 +36,7 @@
 				"yuque.token": {
 					"type": "string",
 					"default": "",
-					"description": "Access Token(https://www.yuque.com/settings/tokens)"
+					"description": "Token(https://www.yuque.com/settings/tokens)"
 				}
 			}
 		},
@@ -84,7 +94,16 @@
                 "contents": "%yuque.viewsWelcome.docs.contents.needsAuthentication%",
                 "when": "YuqueManagerStateContext == NeedsAuthentication"
             }
-        ]
+        ],
+		"menus": {
+			"view/title": [
+				{
+					"command": "yuque.logout",
+					"group": "navigation",
+					"when": "view == yuque.profile"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
