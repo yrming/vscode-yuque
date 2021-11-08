@@ -70,8 +70,7 @@ export interface YuqueRepo {
     user: YuqueUserBase,
     user_id: number,
     watches_count: number,
-    _serializer: string,
-	__docs?: YuqueDoc[] | null
+    _serializer: string
 }
 
 export interface YuqueDoc {
