@@ -1,15 +1,12 @@
 import * as vscode from 'vscode';
-import YuqueSettings from "./utils/settings";
-import { executeCommands } from './commands/executeCommands';
+import YuqueSettings from "./yuque/settings";
 import { registerCommands } from './commands/registerCommands';
-import { initClient } from './utils/yuqueClient';
+import { registerTrees } from './tree/common/registerTrees';
 
 export async function activate(context: vscode.ExtensionContext) {
 	YuqueSettings.init(context);
-	await executeCommands();
-	registerCommands();
-	const client = await initClient();
-	console.log('client:', client);
+	registerCommands(context);
+	registerTrees(context);
 }
 
 export function deactivate() {}
