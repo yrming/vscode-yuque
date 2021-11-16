@@ -1,4 +1,11 @@
-// declare module '@yuque/sdk'
+export interface YuqueClient {
+    options: any,
+	users: any,
+	groups: any,
+	repos: any,
+	docs: any
+	_client: any,
+}
 export interface YuqueAuthData {
 	accessToken: string | undefined
 }
@@ -100,4 +107,11 @@ export interface YuqueDoc {
 	view_status: number,
 	word_count: number,
 	_serializer: string,
+}
+
+export interface RecentYuqueDoc {
+	id: number,
+	title: string,
+	namespace: string,
+	slug: string
 }
