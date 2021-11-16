@@ -55,51 +55,51 @@
 			]
 		},
 		"views": {
-            "yuque": [
-                {
-                    "id": "yuque.welcome.initializing",
-                    "name": "%yuque.views.welcome%",
-                    "when": "YuqueManagerStateContext != NeedsAuthentication && YuqueManagerStateContext != HasSetToken && YuqueManagerStateContext != DataLoaded"
-                },
-                {
-                    "id": "yuque.welcome.needsAuthentication",
-                    "name": "%yuque.views.welcome%",
-                    "when": "YuqueManagerStateContext == NeedsAuthentication"
-                },
-                {
-                    "id": "yuque.recent",
-                    "name": "%yuque.views.recent%",
-                    "when": "YuqueManagerStateContext == HasSetToken"
-                },
-                {
-                    "id": "yuque.repos",
-                    "name": "%yuque.views.repos%",
-                    "when": "YuqueManagerStateContext == HasSetToken"
-                },
-                {
-                    "id": "yuque.groups",
-                    "name": "%yuque.views.groups%",
-                    "when": "YuqueManagerStateContext == HasSetToken"
-                },
-                {
-                    "id": "yuque.profile",
-                    "name": "%yuque.views.profile%",
-                    "when": "YuqueManagerStateContext == HasSetToken"
-                }
-            ]
-        },
-        "viewsWelcome": [
-            {
-                "view": "yuque.welcome.initializing",
-                "contents": "%yuque.viewsWelcome.docs.contents.initializing%",
-                "when": "YuqueManagerStateContext != NeedsAuthentication && YuqueManagerStateContext != HasSetToken && YuqueManagerStateContext != DataLoaded"
-            },
-            {
-                "view": "yuque.welcome.needsAuthentication",
-                "contents": "%yuque.viewsWelcome.docs.contents.needsAuthentication%",
-                "when": "YuqueManagerStateContext == NeedsAuthentication"
-            }
-        ],
+			"yuque": [
+				{
+					"id": "yuque.welcome.initializing",
+					"name": "%yuque.views.welcome%",
+					"when": "YuqueManagerStateContext != NeedsAuthentication && YuqueManagerStateContext != HasSetToken && YuqueManagerStateContext != DataLoaded"
+				},
+				{
+					"id": "yuque.welcome.needsAuthentication",
+					"name": "%yuque.views.welcome%",
+					"when": "YuqueManagerStateContext == NeedsAuthentication"
+				},
+				{
+					"id": "yuque.recent",
+					"name": "%yuque.views.recent%",
+					"when": "YuqueManagerStateContext == HasSetToken"
+				},
+				{
+					"id": "yuque.repos",
+					"name": "%yuque.views.repos%",
+					"when": "YuqueManagerStateContext == HasSetToken"
+				},
+				{
+					"id": "yuque.groups",
+					"name": "%yuque.views.groups%",
+					"when": "YuqueManagerStateContext == HasSetToken"
+				},
+				{
+					"id": "yuque.profile",
+					"name": "%yuque.views.profile%",
+					"when": "YuqueManagerStateContext == HasSetToken"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "yuque.welcome.initializing",
+				"contents": "%yuque.viewsWelcome.docs.contents.initializing%",
+				"when": "YuqueManagerStateContext != NeedsAuthentication && YuqueManagerStateContext != HasSetToken && YuqueManagerStateContext != DataLoaded"
+			},
+			{
+				"view": "yuque.welcome.needsAuthentication",
+				"contents": "%yuque.viewsWelcome.docs.contents.needsAuthentication%",
+				"when": "YuqueManagerStateContext == NeedsAuthentication"
+			}
+		],
 		"menus": {
 			"view/title": [
 				{
@@ -139,6 +139,7 @@
 	"dependencies": {
 		"@yuque/sdk": "^1.1.1",
 		"image-downloader": "^4.0.3",
+		"marked": "^4.0.3",
 		"vscode-nls": "^5.0.0"
 	}
 }
