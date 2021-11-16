@@ -10,5 +10,6 @@
     "yuque.viewsWelcome.docs.contents.needsAuthentication": "您尚未添加语雀Token。\n[添加](command:yuque.setToken)\nToken 用于访问您的私密数据，请注意保密，如有泄漏，请重置，[查看文档](https://www.yuque.com/settings/tokens)。\n我们不会存储您的Token，并且您安装的其它插件也无法获取您的Token，请放心使用。",
     "yuque.inputBox.setToken": "请输入您的语雀Token",
     "yuque.commands.setToken.title": "添加语雀Token",
-    "yuque.commands.logout.title": "退出登录"
+    "yuque.commands.logout.title": "退出登录",
+    "yuque.commands.clearRecent.title": "清除最近浏览"
 }

@@ -28,6 +28,11 @@
 				"command": "yuque.logout",
 				"title": "%yuque.commands.logout.title%",
 				"icon": "$(log-out)"
+			},
+			{
+				"command": "yuque.clearRecent",
+				"title": "%yuque.commands.clearRecent.title%",
+				"icon": "$(trash)"
 			}
 		],
 		"configuration": {
@@ -97,6 +102,11 @@
         ],
 		"menus": {
 			"view/title": [
+				{
+					"command": "yuque.clearRecent",
+					"group": "navigation",
+					"when": "view == yuque.recent"
+				},
 				{
 					"command": "yuque.logout",
 					"group": "navigation",
