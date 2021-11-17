@@ -132,7 +132,6 @@ export default class YuqueSettings {
 
 			fs.rmdirSync(rootPath, { recursive: true });
 			fs.mkdirSync(rootPath, { recursive: true });
-			console.log('setTempRootPath:', rootPath);
 			return rootPath;
 		} catch (error) {
 			throw new Error("Unable to set tempRootPath.");

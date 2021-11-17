@@ -70,7 +70,7 @@ function getHTMLContent(title: string, body: string): string {
                 <meta charset="utf-8"/>
                 <title>${title}</title>
             </head>
-            <body>
+            <body style="width: 900px; margin: 0 auto;">
                 <div>
                     ${bodyContent}
                 </div>
