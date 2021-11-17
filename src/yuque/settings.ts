@@ -2,7 +2,7 @@
 import * as path from "path";
 import * as fs from "fs";
 import { ExtensionContext, ExtensionMode, SecretStorage, commands } from "vscode";
-import { RecentYuqueDoc, YuqueAuthData, YuqueDoc } from "../@types/type";
+import { RecentYuqueDoc, YuqueAuthData } from "../@types/type";
 import { verifyCredentials } from "./client";
 
 export const YuqueManagerStateContext: string = 'YuqueManagerStateContext';

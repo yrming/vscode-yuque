@@ -22,9 +22,6 @@ export class ProfileTreeProvider implements vscode.TreeDataProvider<ProfileTreeI
     }
 
     async getChildren(element?: ProfileTreeItem): Promise<ProfileTreeItem[] | null | undefined> {
-        // const fileUri = await downloadIcon(this.user.avatar_url, this.subPath, this.user.id);
-        // console.log('fileUri123:', fileUri);
-        console.log('user:', this.user);
         const treeItems: ProfileTreeItem[] = [
             new ProfileTreeItem(`昵称：${this.user.name}`, new vscode.ThemeIcon('account')),
             new ProfileTreeItem(`账号类型：${this.user.type === 'Group' ? '团队' : '个人'}`, this.user.type === 'Group' ? new vscode.ThemeIcon('organization') : new vscode.ThemeIcon('person')),
