@@ -74,7 +74,7 @@ export class GroupsTreeProvider implements vscode.TreeDataProvider<GroupsTreeIte
                 const treeItem = new DocsTreeItem(item.title, item.title, vscode.TreeItemCollapsibleState.None, new vscode.ThemeIcon('file-text'), {
                     title: 'OpenDoc',
                     command: 'yuque.openDoc',
-                    arguments: [namespace, item.slug]
+                    arguments: [this.client, namespace, item]
                 });
                 treeItems.push(treeItem);
             });

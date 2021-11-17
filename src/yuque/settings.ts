@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as path from "path";
 import * as fs from "fs";
-import { ExtensionContext, ExtensionMode, SecretStorage, commands, Memento } from "vscode";
-import { YuqueAuthData } from "../@types/type";
+import { ExtensionContext, ExtensionMode, SecretStorage, commands } from "vscode";
+import { RecentYuqueDoc, YuqueAuthData, YuqueDoc } from "../@types/type";
 import { verifyCredentials } from "./client";
 
 export const YuqueManagerStateContext: string = 'YuqueManagerStateContext';
@@ -14,11 +14,13 @@ export enum YuqueManagerState {
 	DataLoaded = 'DataLoaded',
 }
 
-const SecretStorageYuqueTokenKey:string = 'YuqueAccessToken';
+const SecretStorageYuqueTokenKey: string = 'YuqueAccessToken';
+const SecretStorageYuqueRecentDocsKey: string = 'YuqueRecentDocs';
+const LocalRecentDocsMaxNumber: number = 20;
 
 export default class YuqueSettings {
 	private static _instance: YuqueSettings;
-	private authStorage: SecretStorage;
+	private secretStorage: SecretStorage;
 
 	public scheme: string;
 	public tempRootPath: string;
@@ -26,7 +28,7 @@ export default class YuqueSettings {
 
 	constructor(private context: ExtensionContext) {
 		this.scheme = "yuque";
-		this.authStorage = context.secrets;
+		this.secretStorage = context.secrets;
 		this.tempRootPath = this.setTempRootPath();
 		this.yuqueManagerState = YuqueManagerState.Initializing;
 	}
@@ -48,12 +50,12 @@ export default class YuqueSettings {
 			const valid = await verifyCredentials(authData.accessToken);
 			if (valid) {
 				this.setYuqueManagerState(YuqueManagerState.HasSetToken);
-				await this.authStorage.store(SecretStorageYuqueTokenKey, JSON.stringify(authData));
+				await this.secretStorage.store(SecretStorageYuqueTokenKey, JSON.stringify(authData));
 			} else {
 				this.setYuqueManagerState(YuqueManagerState.NeedsAuthentication);
 			}
-		} catch (err) {
-			console.log("Unable to store Yuque authentication data in Secret Storage.", err);
+		} catch (error) {
+			console.log("Unable to store Yuque authentication data in Secret Storage.", error);
 			this.setYuqueManagerState(YuqueManagerState.NeedsAuthentication);
 		}
 	}
@@ -62,7 +64,7 @@ export default class YuqueSettings {
 		let authData: YuqueAuthData = {
 			accessToken: undefined
 		};
-		let authDataString = await this.authStorage.get(SecretStorageYuqueTokenKey);
+		let authDataString = await this.secretStorage.get(SecretStorageYuqueTokenKey);
 		if (authDataString) {
 			authData = JSON.parse(authDataString) as YuqueAuthData;
 			const valid = await verifyCredentials(authData.accessToken);
@@ -79,10 +81,45 @@ export default class YuqueSettings {
 
 	async deleteAuthData(): Promise<void> {
 		try {
-			await this.authStorage.delete(SecretStorageYuqueTokenKey);
+			await this.secretStorage.delete(SecretStorageYuqueTokenKey);
 			this.setYuqueManagerState(YuqueManagerState.NeedsAuthentication);
 		} catch (error) {
 			console.log("Unable to delete yuque token");
+		}
+	}
+
+	async getRecentDocs(): Promise<RecentYuqueDoc[]> {
+		let docs: RecentYuqueDoc[] = [];
+		const docsString = await this.secretStorage.get(SecretStorageYuqueRecentDocsKey);
+		if (docsString) {
+			docs = JSON.parse(docsString);
+		}
+		return docs;
+	}
+
+	async storeDocToRecentDocs(doc: RecentYuqueDoc): Promise<void> {
+		try {
+			let docs = await this.getRecentDocs();
+			if (docs.length < LocalRecentDocsMaxNumber) {
+				const targetIndex = docs.findIndex(item => item.id === doc.id);
+				if (targetIndex > -1) {
+					docs.splice(targetIndex, 1);
+				}
+			} else {
+				docs.pop();
+			}
+			docs.unshift(doc);
+			await this.secretStorage.store(SecretStorageYuqueRecentDocsKey, JSON.stringify(docs));
+		} catch (error) {
+			console.log("Unable to store Yuque recent docs in Secret Storage.", error);
+		}
+	}
+
+	async deleteRecentDocs(): Promise<void> {
+		try {
+			await this.secretStorage.delete(SecretStorageYuqueRecentDocsKey);
+		} catch (error) {
+			console.log("Unable to delete yuque recent docs");
 		}
 	}
 
@@ -97,7 +134,7 @@ export default class YuqueSettings {
 			fs.mkdirSync(rootPath, { recursive: true });
 			console.log('setTempRootPath:', rootPath);
 			return rootPath;
-		} catch (err) {
+		} catch (error) {
 			throw new Error("Unable to set tempRootPath.");
 		}
 	}
@@ -113,7 +150,7 @@ export default class YuqueSettings {
 	static clean(): void {
 		try {
 			fs.rmdirSync(this._instance.tempRootPath, { recursive: true });
-		} catch (err) {
+		} catch (error) {
 			console.log("Unable to clean temp path.");
 		}
 	}

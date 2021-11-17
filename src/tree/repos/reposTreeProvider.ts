@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { YuqueDoc, YuqueRepo, YuqueUserDetail } from '../../@types/type';
+import { YuqueClient, YuqueDoc, YuqueRepo, YuqueUserDetail } from '../../@types/type';
 import { DocsTreeItem } from '../common/docsTreeItem';
 import { ReposTreeItem } from './ReposTreeItem';
 
@@ -9,18 +9,7 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
 
     private repos?: YuqueRepo[]; 
 
-    constructor(private context: vscode.ExtensionContext, private client: any, private user: YuqueUserDetail) {
-        vscode.commands.registerCommand('yuque.openDoc', async (namespace, slug) => {
-            let docDetail = await client.docs.get({ namespace: namespace, slug: slug, data: { raw: 1 } });
-            if (docDetail.format === 'lakeboard' || docDetail.format === 'laketable' || docDetail.format === 'lakeshow' || docDetail.format === 'lakesheet' || docDetail.format === 'lakemind') {
-                vscode.window.showWarningMessage(
-                    `抱歉，该文档的格式为.${docDetail.format}，暂不支持查看。`
-                );
-            } else {
-                const panel = vscode.window.createWebviewPanel(docDetail.title, docDetail.title, vscode.ViewColumn.One, {});
-                panel.webview.html = docDetail.body || docDetail.body_html;
-            }
-        });
+    constructor(private context: vscode.ExtensionContext, private client: YuqueClient, private user: YuqueUserDetail) {
     }
 
     refresh(): void {
@@ -59,7 +48,7 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
                 const treeItem = new DocsTreeItem(item.title, item.title, vscode.TreeItemCollapsibleState.None, new vscode.ThemeIcon('file-text'), {
                     title: 'OpenDoc',
                     command: 'yuque.openDoc',
-                    arguments: [namespace, item.slug]
+                    arguments: [this.client, namespace, item]
                 });
                 treeItems.push(treeItem);
             });

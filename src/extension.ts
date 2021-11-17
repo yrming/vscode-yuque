@@ -5,8 +5,9 @@ import { registerTrees } from './tree/common/registerTrees';
 
 export async function activate(context: vscode.ExtensionContext) {
 	YuqueSettings.init(context);
-	registerCommands(context);
-	registerTrees(context);
+	const recentDocsChangeEventEmitter: vscode.EventEmitter<void> = new vscode.EventEmitter();
+	registerCommands(context, recentDocsChangeEventEmitter);
+	registerTrees(context, recentDocsChangeEventEmitter);
 }
 
 export function deactivate() {}
