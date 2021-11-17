@@ -17,6 +17,7 @@
 		"onView:yuque.welcome.groups",
 		"onView:yuque.welcome.profile"
 	],
+	"icon": "resources/logo.svg",
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
