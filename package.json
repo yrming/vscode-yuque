@@ -141,5 +141,10 @@
 		"image-downloader": "^4.0.3",
 		"marked": "^4.0.3",
 		"vscode-nls": "^5.0.0"
-	}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/yrming/vscode-yuque"
+	  },
+	"publisher": "YRM"
 }
