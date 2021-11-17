@@ -16,11 +16,11 @@ export function registerCommands(context: ExtensionContext, recentDocsChangeEven
     });
 
     commands.registerCommand('yuque.logout', async () => {
-        const confirm = await window.showWarningMessage(
+        const flag = await window.showWarningMessage(
             `你确定要退出吗？退出将会清除存放在本地的Token以及最近浏览的数据。`,
             '确定', '取消'
         );
-        if (confirm) {
+        if (flag === '确定') {
             await settings.deleteAuthData();
             await settings.deleteRecentDocs();
             recentDocsChangeEventEmitter.fire();
@@ -28,11 +28,11 @@ export function registerCommands(context: ExtensionContext, recentDocsChangeEven
     });
 
     commands.registerCommand('yuque.clearRecent', async () => {
-        const confirm = await window.showWarningMessage(
+        const flag = await window.showWarningMessage(
             `你确定清除最近浏览的数据吗？`,
             '确定', '取消'
         );
-        if (confirm) {
+        if (flag === '确定') {
             await settings.deleteRecentDocs();
             recentDocsChangeEventEmitter.fire();
         }
