@@ -17,11 +17,13 @@ export function registerCommands(context: ExtensionContext, recentDocsChangeEven
 
     commands.registerCommand('yuque.logout', async () => {
         const confirm = await window.showWarningMessage(
-            `你确定要退出吗？退出将会清除存放在本地的Token。`,
+            `你确定要退出吗？退出将会清除存放在本地的Token以及最近浏览的数据`,
             '确定', '取消'
         );
         if (confirm) {
-            settings.deleteAuthData();
+            await settings.deleteAuthData();
+            await settings.deleteRecentDocs();
+            recentDocsChangeEventEmitter.fire();
         }
     });
 
