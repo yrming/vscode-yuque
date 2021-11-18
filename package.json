@@ -2,7 +2,7 @@
 	"name": "yuque",
 	"displayName": "Yuque",
 	"description": "Yuque extension for Visual Studio Code",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.61.0"
 	},
@@ -146,6 +146,6 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/yrming/vscode-yuque"
-	  },
+	},
 	"publisher": "YRM"
 }
