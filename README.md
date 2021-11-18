@@ -13,5 +13,9 @@ To install the extension, open the Extensions view, search for `yuque` to filter
 - View doc in the side panel
 - Record recently viewed data
 
+## Issues
+
+This extension is still in development, so please refer to our [issue tracker for known issues](https://github.com/yrming/vscode-yuque/issues), and please contribute with additional information if you encounter an issue yourself.
+
 ## License
 MIT License © 2021 [YRM](https://github.com/yrming)
