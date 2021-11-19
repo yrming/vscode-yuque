@@ -12,5 +12,5 @@ export class ReposTreeItem extends vscode.TreeItem {
 		super(label, collapsibleState);
 	}
 
-	contextValue = 'repos';
+	contextValue = 'repo';
 }

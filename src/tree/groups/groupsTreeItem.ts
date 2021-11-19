@@ -12,5 +12,5 @@ export class GroupsTreeItem extends vscode.TreeItem {
 		super(label, collapsibleState);
 	}
 
-	contextValue = 'groups';
+	contextValue = 'group';
 }
