@@ -11,5 +11,9 @@
     "yuque.inputBox.setToken": "Please input your yuque token",
     "yuque.commands.setToken.title": "Set token",
     "yuque.commands.logout.title": "Logout",
-    "yuque.commands.clearRecent.title": "Clear recent docs"
+    "yuque.commands.clearRecent.title": "Clear recent docs",
+    "yuque.commands.repos.refresh.title": "Refresh",
+    "yuque.commands.repos.create.title": "New repository",
+    "yuque.commands.repos.edit.title": "Edit repository",
+    "yuque.commands.repos.delete.title": "Delete repository"
 }

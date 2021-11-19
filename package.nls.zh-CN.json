@@ -11,5 +11,9 @@
     "yuque.inputBox.setToken": "请输入你的语雀Token",
     "yuque.commands.setToken.title": "添加语雀Token",
     "yuque.commands.logout.title": "退出登录",
-    "yuque.commands.clearRecent.title": "清除最近浏览"
+    "yuque.commands.clearRecent.title": "清除最近浏览",
+    "yuque.commands.repos.refresh.title": "刷新",
+    "yuque.commands.repos.create.title": "新建知识库",
+    "yuque.commands.repos.edit.title": "修改知识库",
+    "yuque.commands.repos.delete.title": "删除知识库"
 }
