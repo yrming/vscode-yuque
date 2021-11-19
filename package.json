@@ -36,16 +36,6 @@
 				"icon": "$(trash)"
 			}
 		],
-		"configuration": {
-			"title": "Yuque Settings",
-			"properties": {
-				"yuque.token": {
-					"type": "string",
-					"default": "",
-					"description": "Token(https://www.yuque.com/settings/tokens)"
-				}
-			}
-		},
 		"viewsContainers": {
 			"activitybar": [
 				{
