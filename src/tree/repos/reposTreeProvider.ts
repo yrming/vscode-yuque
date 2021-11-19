@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { v4 as uuidv4 } from 'uuid';
 import { YuqueClient, YuqueDoc, YuqueRepo, YuqueUserDetail } from '../../@types/type';
 import { DocsTreeItem } from '../common/docsTreeItem';
 import { ReposTreeItem } from './ReposTreeItem';
@@ -10,10 +11,67 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
     private repos?: YuqueRepo[]; 
 
     constructor(private context: vscode.ExtensionContext, private client: YuqueClient, private user: YuqueUserDetail) {
+        vscode.commands.registerCommand('yuque.repos.create', async () => {
+            const name = await vscode.window.showInputBox({ placeHolder: '请输入知识库名称' });
+            if (name) {
+                const value = await vscode.window.showQuickPick(['仅自己可见（自己和知识库成员可见）', '互联网可见（互联网所有人可见）'], {
+                    placeHolder: '请选择可见范围'
+                });
+                if(value) {
+                    const publicVal = value === '互联网可见（互联网所有人可见）' ? 1 : 0;
+                    try {
+                        await this.client.repos.create({ user: this.user.id, data: { name: name, slug: uuidv4(), type: "Book", public: publicVal } });
+                        vscode.window.showInformationMessage('创建成功！');
+                        this.refresh();
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+            }
+        });
+
+        vscode.commands.registerCommand('yuque.repos.edit', async (treeItem: ReposTreeItem) => {
+            const name = await vscode.window.showInputBox({ value: treeItem.label, placeHolder: '请输入知识库名称' });
+            if (name) {
+                const value = await vscode.window.showQuickPick(['仅自己可见（自己和知识库成员可见）', '互联网可见（互联网所有人可见）'], {
+                    placeHolder: '请选择可见范围'
+                });
+                if(value) {
+                    const publicVal = value === '互联网可见（互联网所有人可见）' ? 1 : 0;
+                    try {
+                        await this.client.repos.create({ user: this.user.id, data: { name: name, slug: uuidv4(), type: "Book", public: publicVal } });
+                        vscode.window.showInformationMessage('修改成功！');
+                        this.refresh();
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+            }
+        });
+
+        vscode.commands.registerCommand('yuque.repos.delete', async (treeItem: ReposTreeItem) => {
+            const flag = await vscode.window.showWarningMessage(
+                `正在删除知识库“${treeItem.label}”，该操作不可逆，一旦操作成功，知识库下的所有内容将会删除。你确定要删除吗？`,
+                '确定', '取消'
+            );
+            if (flag === '确定') {
+                try {
+                    await this.client.repos.delete({ namespace: treeItem.namespace });
+                    vscode.window.showInformationMessage('已删除！');
+                    this.refresh();
+                } catch (error) {
+                    
+                }
+            }
+        });
+
+        vscode.commands.registerCommand('yuque.repos.refresh', async () => {
+            this.refresh();
+        });
     }
 
     refresh(): void {
-        return this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire();
 	}
 
     getTreeItem(element: ReposTreeItem): vscode.TreeItem | Thenable<vscode.TreeItem> {
