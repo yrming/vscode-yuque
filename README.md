@@ -2,7 +2,7 @@
 
 The Yuque extension makes it easy to read, manage your Yuque data from Visual Studio Code.
 
-![](https://github.com/yrming/vscode-yuque/blob/main/resources/snapshot.png)
+![](./resources/snapshot.png)
 
 ## Installation
 To install the extension, open the Extensions view, search for `yuque` to filter results and select Yuque extension authored by YRM.
