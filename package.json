@@ -46,6 +46,11 @@
                 "icon": "$(refresh)"
             },
             {
+                "command": "yuque.repos.createDoc",
+                "title": "%yuque.commands.repos.createDoc.title%",
+                "icon": "$(new-file)"
+            },
+            {
                 "command": "yuque.repos.edit",
                 "title": "%yuque.commands.repos.edit.title%",
                 "icon": "$(edit)"
@@ -136,13 +141,18 @@
             ],
             "view/item/context": [
                 {
-                    "command": "yuque.repos.edit",
+                    "command": "yuque.repos.createDoc",
                     "group": "inline@1",
                     "when": "view == yuque.repos && viewItem == repo"
                 },
                 {
-                    "command": "yuque.repos.delete",
+                    "command": "yuque.repos.edit",
                     "group": "inline@2",
+                    "when": "view == yuque.repos && viewItem == repo"
+                },
+                {
+                    "command": "yuque.repos.delete",
+                    "group": "inline@3",
                     "when": "view == yuque.repos && viewItem == repo"
                 }
             ]

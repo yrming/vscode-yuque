@@ -14,6 +14,7 @@
     "yuque.commands.clearRecent.title": "Clear recent docs",
     "yuque.commands.repos.refresh.title": "Refresh",
     "yuque.commands.repos.create.title": "New repository",
+    "yuque.commands.repos.createDoc.title": "New document",
     "yuque.commands.repos.edit.title": "Edit repository",
     "yuque.commands.repos.delete.title": "Delete repository"
 }
