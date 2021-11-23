@@ -59,7 +59,7 @@ export class GroupsTreeProvider implements vscode.TreeDataProvider<GroupsTreeIte
         let treeItems: ReposTreeItem[] = [];
         if (Array.isArray(repos)) {
             repos.forEach((item: YuqueRepo) => {
-                const treeItem = new ReposTreeItem(item.name, item.namespace, item.name, vscode.TreeItemCollapsibleState.Collapsed, new vscode.ThemeIcon('repo'));
+                const treeItem = new ReposTreeItem(item.name, item.namespace, item.public, item.name, vscode.TreeItemCollapsibleState.Collapsed, new vscode.ThemeIcon('repo'));
                 treeItems.push(treeItem);
             });
         }

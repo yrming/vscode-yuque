@@ -21,12 +21,22 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
             this._addOrEditRepo(AddOrEditEnum.Add);
         });
 
-        vscode.commands.registerCommand('yuque.repos.createDoc', async () => {
-            console.log('createDoc');
-            const panel = vscode.window.createWebviewPanel('新建文档', '新建文档', vscode.ViewColumn.One, {
-                enableScripts: true
-            });
-            panel.webview.html = this._getHTMLContent();
+        vscode.commands.registerCommand('yuque.repos.createDoc', async (treeItem: ReposTreeItem) => {
+            const title = await vscode.window.showInputBox({ value: '', placeHolder: '请输入文档标题' });
+            if (title) {
+                if (treeItem.isPublic) {
+                    const value = await vscode.window.showQuickPick(['仅自己可见（自己和知识库成员可见）', '互联网可见（互联网所有人可见）'], {
+                        placeHolder: '请选择可见范围'
+                    });
+                    if (value) {
+                        const publicVal = value === '互联网可见（互联网所有人可见）' ? 1 : 0;
+                        this._createWebviewPanel(context, 'createDoc', title, publicVal, treeItem.namespace);
+                    }
+                } else {
+                    this._createWebviewPanel(context, 'createDoc', title, 0, treeItem.namespace);
+                }
+                
+            }
         });
 
         vscode.commands.registerCommand('yuque.repos.edit', async (treeItem: ReposTreeItem) => {
@@ -44,7 +54,7 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
                     vscode.window.showInformationMessage('已删除！');
                     this.refresh();
                 } catch (error) {
-                    
+                    vscode.window.showErrorMessage(`操作失败！${error}`);
                 }
             }
         });
@@ -69,12 +79,37 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
                     this.refresh();
                 } catch (error) {
                     console.log(error);
+                    vscode.window.showErrorMessage(`操作失败！${error}`);
                 }
             }
         }
     }
 
-    _getHTMLContent(title: string = 'New Doc'): string {
+    _createWebviewPanel (context: vscode.ExtensionContext, viewType: string, title: string, isPublic: number, repoNamesapce?: string) {
+        const panel = vscode.window.createWebviewPanel(viewType, title, vscode.ViewColumn.One, {
+            enableScripts: true
+        });
+        panel.webview.html = this._getHTMLContent();
+        panel.webview.onDidReceiveMessage(
+            async message => {
+                switch (message.command) {
+                    case 'publish':
+                        try {
+                            await this.client.docs.create({ namespace: repoNamesapce, data: { title: title, slug: uuidv4(), public: isPublic, body: message.text } });
+                            vscode.window.showInformationMessage('创建文档成功！');
+                            this.refresh();
+                        } catch (error) {
+                            vscode.window.showErrorMessage(`操作失败！${error}`);
+                        }
+                        break;
+                }
+            },
+            undefined,
+            context.subscriptions
+        );
+    }
+
+    _getHTMLContent(title: string = 'Create Doc'): string {
         const html = `
             <!doctype html>
             <html>
@@ -165,7 +200,6 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
                     </div>
                     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
                     <script>
-                        const vscode = acquireVsCodeApi();
                         const $markdownElem = document.querySelector('.markdown');
                         $markdownElem.focus();
                         $markdownElem.addEventListener('change', handleInput, false);
@@ -180,6 +214,17 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
                                 document.querySelector('.preview-container').innerHTML = '<div class="empty-container"><img src="https://gw.alipayobjects.com/mdn/prod_resou/afts/img/A*Q-bIT76mSLUAAAAAAAAAAAAAARQnAQ" /></div>'
                             }
                         }
+
+                        const vscode = acquireVsCodeApi();
+                        const $publishBtnElem = document.querySelector('.publish-btn');
+                        $publishBtnElem.addEventListener('click', function() {
+                            if ($markdownElem.value) {
+                                vscode.postMessage({
+                                    command: 'publish',
+                                    text: $markdownElem.value
+                                })
+                            }
+                        })
                     </script>
                 </body>
             </html>
@@ -208,7 +253,7 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
         let treeItems: ReposTreeItem[] = [];
         if (Array.isArray(this.repos)) {
             this.repos.forEach((item: YuqueRepo) => {
-                const treeItem = new ReposTreeItem(item.name, item.namespace, item.name, vscode.TreeItemCollapsibleState.Collapsed, new vscode.ThemeIcon('repo'));
+                const treeItem = new ReposTreeItem(item.name, item.namespace, item.public, item.name, vscode.TreeItemCollapsibleState.Collapsed, new vscode.ThemeIcon('repo'));
                 treeItems.push(treeItem);
             });
         }
