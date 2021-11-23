@@ -1,3 +1,7 @@
+## 0.0.7 - 2021-11-23
+### Added
+- Support for refreshing groups
+
 ## 0.0.6 - 2021-11-23
 ### Added
 - Support for deleting document
