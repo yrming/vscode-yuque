@@ -64,6 +64,11 @@
                 "command": "yuque.repos.deleteDoc",
                 "title": "%yuque.commands.repos.deleteDoc.title%",
                 "icon": "$(trash)"
+            },
+            {
+                "command": "yuque.groups.refresh",
+                "title": "%yuque.commands.groups.refresh.title%",
+                "icon": "$(refresh)"
             }
         ],
         "viewsContainers": {
@@ -142,6 +147,11 @@
                     "command": "yuque.logout",
                     "group": "navigation",
                     "when": "view == yuque.profile"
+                },
+                {
+                    "command": "yuque.groups.refresh",
+                    "group": "navigation@1",
+                    "when": "view == yuque.groups"
                 }
             ],
             "view/item/context": [

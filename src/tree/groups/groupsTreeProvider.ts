@@ -12,8 +12,10 @@ export class GroupsTreeProvider implements vscode.TreeDataProvider<GroupsTreeIte
     private groups?: YuqueGroup[];
     readonly subPath = 'groups';
 
-    constructor(private context: vscode.ExtensionContext, private client: any, private user: YuqueUserDetail) {
-
+    constructor(private context: vscode.ExtensionContext, private client: any, private user: YuqueUserDetail) { 
+        vscode.commands.registerCommand('yuque.groups.refresh', async () => {
+            this.refresh();
+        });
     }
 
     refresh(): void {

@@ -17,5 +17,6 @@
     "yuque.commands.repos.createDoc.title": "新建文档",
     "yuque.commands.repos.edit.title": "修改知识库",
     "yuque.commands.repos.delete.title": "删除知识库",
-    "yuque.commands.repos.deleteDoc.title": "删除文档"
+    "yuque.commands.repos.deleteDoc.title": "删除文档",
+    "yuque.commands.groups.refresh.title": "刷新"
 }
