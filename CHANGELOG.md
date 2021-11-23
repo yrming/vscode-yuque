@@ -1,3 +1,7 @@
+## 0.0.6 - 2021-11-23
+### Added
+- Support for deleting document
+
 ## 0.0.5 - 2021-11-23
 ### Added
 - Support for creating new document
