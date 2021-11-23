@@ -1,3 +1,7 @@
+## 0.0.5 - 2021-11-23
+### Added
+- Support for creating new document
+
 ## 0.0.4 - 2021-11-19
 ### Added
 - Create, modify, and delete repository
