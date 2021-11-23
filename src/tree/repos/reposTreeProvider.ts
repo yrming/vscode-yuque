@@ -59,6 +59,22 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
             }
         });
 
+        vscode.commands.registerCommand('yuque.repos.deleteDoc', async (treeItem: DocsTreeItem) => {
+            const flag = await vscode.window.showWarningMessage(
+                `正在删除文档“${treeItem.label}”，该操作不可逆，你确定要删除吗？`,
+                '确定', '取消'
+            );
+            if (flag === '确定') {
+                try {
+                    await this.client.docs.delete({ namespace: treeItem.namespace, id: treeItem.docId });
+                    vscode.window.showInformationMessage('已删除！');
+                    this.refresh();
+                } catch (error) {
+                    vscode.window.showErrorMessage(`操作失败！${error}`);
+                }
+            }
+        });
+
         vscode.commands.registerCommand('yuque.repos.refresh', async () => {
             this.refresh();
         });
@@ -265,7 +281,7 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
         let treeItems: DocsTreeItem[] = [];
         if (Array.isArray(docs) && docs.length > 0) {
             docs.forEach((item: YuqueDoc) => {
-                const treeItem = new DocsTreeItem(item.title, item.title, vscode.TreeItemCollapsibleState.None, new vscode.ThemeIcon('file-text'), {
+                const treeItem = new DocsTreeItem(item.title, item.title, item.id, namespace, vscode.TreeItemCollapsibleState.None, new vscode.ThemeIcon('file-text'), {
                     title: 'OpenDoc',
                     command: 'yuque.openDoc',
                     arguments: [this.client, namespace, item]
@@ -273,7 +289,7 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
                 treeItems.push(treeItem);
             });
         } else {
-            const treeItem = new DocsTreeItem('暂无文档', undefined, undefined, new vscode.ThemeIcon('warning'));
+            const treeItem = new DocsTreeItem('暂无文档', undefined, undefined, undefined, undefined, new vscode.ThemeIcon('warning'));
             treeItems.push(treeItem);
         }
         return Promise.resolve(treeItems);

@@ -39,24 +39,28 @@ export function registerCommands(context: ExtensionContext, recentDocsChangeEven
     });
 
     commands.registerCommand('yuque.openDoc', async (client: YuqueClient, namespace: string, doc: YuqueDoc) => {
-        let docDetail = await client.docs.get({ namespace: namespace, slug: doc.slug, data: { raw: 1 } });
-        if (docDetail.format === 'lakeboard' || docDetail.format === 'laketable' || docDetail.format === 'lakeshow' || docDetail.format === 'lakesheet' || docDetail.format === 'lakemind') {
-            window.showWarningMessage(
-                `抱歉，该文档的格式为".${docDetail.format}"，暂不支持查看。`
-            );
-        } else {
-            const panel = window.createWebviewPanel(docDetail.title, docDetail.title, ViewColumn.One, {
-                enableScripts: true
-            });
-            panel.webview.html = getHTMLContent(docDetail.title, docDetail.body);
-            const obj = {
-                id: doc.id,
-                title: doc.title,
-                namespace: namespace,
-                slug: doc.slug
-            };
-            await settings.storeDocToRecentDocs(obj);
-            recentDocsChangeEventEmitter.fire();
+        try {
+            let docDetail = await client.docs.get({ namespace: namespace, slug: doc.slug, data: { raw: 1 } });
+            if (docDetail.format === 'lakeboard' || docDetail.format === 'laketable' || docDetail.format === 'lakeshow' || docDetail.format === 'lakesheet' || docDetail.format === 'lakemind') {
+                window.showWarningMessage(
+                    `抱歉，该文档的格式为".${docDetail.format}"，暂不支持查看。`
+                );
+            } else {
+                const panel = window.createWebviewPanel(docDetail.title, docDetail.title, ViewColumn.One, {
+                    enableScripts: true
+                });
+                panel.webview.html = getHTMLContent(docDetail.title, docDetail.body);
+                const obj = {
+                    id: doc.id,
+                    title: doc.title,
+                    namespace: namespace,
+                    slug: doc.slug
+                };
+                await settings.storeDocToRecentDocs(obj);
+                recentDocsChangeEventEmitter.fire();
+            }
+        } catch (error) {
+            window.showWarningMessage(`操作失败！${error}`);
         }
     });
 }

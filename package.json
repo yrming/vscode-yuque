@@ -59,6 +59,11 @@
                 "command": "yuque.repos.delete",
                 "title": "%yuque.commands.repos.delete.title%",
                 "icon": "$(trash)"
+            },
+            {
+                "command": "yuque.repos.deleteDoc",
+                "title": "%yuque.commands.repos.deleteDoc.title%",
+                "icon": "$(trash)"
             }
         ],
         "viewsContainers": {
@@ -154,6 +159,11 @@
                     "command": "yuque.repos.delete",
                     "group": "inline@3",
                     "when": "view == yuque.repos && viewItem == repo"
+                },
+                {
+                    "command": "yuque.repos.deleteDoc",
+                    "group": "inline@1",
+                    "when": "view == yuque.repos && viewItem == doc"
                 }
             ]
         }

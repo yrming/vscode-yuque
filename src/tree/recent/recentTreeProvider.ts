@@ -29,7 +29,7 @@ export class RecentTreeProvider implements vscode.TreeDataProvider<DocsTreeItem>
         let treeItems: DocsTreeItem[] = [];
         if (Array.isArray(this.docs) && this.docs.length > 0) {
             this.docs.forEach((item: RecentYuqueDoc) => {
-                const treeItem = new DocsTreeItem(item.title, item.title, vscode.TreeItemCollapsibleState.None, new vscode.ThemeIcon('file-text'), {
+                const treeItem = new DocsTreeItem(item.title, item.title, item.id, item.namespace, vscode.TreeItemCollapsibleState.None, new vscode.ThemeIcon('file-text'), {
                     title: 'OpenDoc',
                     command: 'yuque.openDoc',
                     arguments: [this.client, item.namespace, item]
@@ -37,7 +37,7 @@ export class RecentTreeProvider implements vscode.TreeDataProvider<DocsTreeItem>
                 treeItems.push(treeItem);
             });
         } else {
-            const treeItem = new DocsTreeItem('暂无数据', undefined, undefined, new vscode.ThemeIcon('warning'));
+            const treeItem = new DocsTreeItem('暂无数据', undefined, undefined, undefined, undefined, new vscode.ThemeIcon('warning'));
             treeItems.push(treeItem);
         }
         return Promise.resolve(treeItems);

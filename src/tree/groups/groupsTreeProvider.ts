@@ -71,7 +71,7 @@ export class GroupsTreeProvider implements vscode.TreeDataProvider<GroupsTreeIte
         let treeItems: DocsTreeItem[] = [];
         if (Array.isArray(docs) && docs.length > 0) {
             docs.forEach((item: YuqueDoc) => {
-                const treeItem = new DocsTreeItem(item.title, item.title, vscode.TreeItemCollapsibleState.None, new vscode.ThemeIcon('file-text'), {
+                const treeItem = new DocsTreeItem(item.title, item.title, item.id, namespace, vscode.TreeItemCollapsibleState.None, new vscode.ThemeIcon('file-text'), {
                     title: 'OpenDoc',
                     command: 'yuque.openDoc',
                     arguments: [this.client, namespace, item]
@@ -79,7 +79,7 @@ export class GroupsTreeProvider implements vscode.TreeDataProvider<GroupsTreeIte
                 treeItems.push(treeItem);
             });
         } else {
-            const treeItem = new DocsTreeItem('暂无文档', undefined, undefined, new vscode.ThemeIcon('warning'));
+            const treeItem = new DocsTreeItem('暂无文档', undefined, undefined, undefined, undefined, new vscode.ThemeIcon('warning'));
             treeItems.push(treeItem);
         }
         return Promise.resolve(treeItems);
