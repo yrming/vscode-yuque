@@ -1,3 +1,7 @@
+## 0.0.8 - 2021-11-26
+### Added
+- Use different icons to distinguish whether the repository is public or private
+
 ## 0.0.7 - 2021-11-23
 ### Added
 - Support for refreshing groups
