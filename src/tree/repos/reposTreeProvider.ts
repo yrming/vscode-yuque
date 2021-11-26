@@ -269,7 +269,7 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
         let treeItems: ReposTreeItem[] = [];
         if (Array.isArray(this.repos)) {
             this.repos.forEach((item: YuqueRepo) => {
-                const treeItem = new ReposTreeItem(item.name, item.namespace, item.public, item.name, vscode.TreeItemCollapsibleState.Collapsed, new vscode.ThemeIcon('repo'));
+                const treeItem = new ReposTreeItem(item.name, item.namespace, item.public, item.name, vscode.TreeItemCollapsibleState.Collapsed, new vscode.ThemeIcon(item.public ? 'globe' : 'lock'));
                 treeItems.push(treeItem);
             });
         }
