@@ -13,5 +13,5 @@ export class DocsTreeItem extends vscode.TreeItem {
 		super(label, collapsibleState);
 	}
 
-	contextValue = 'doc';
+	contextValue = this.docId ? 'doc' : '';
 }
