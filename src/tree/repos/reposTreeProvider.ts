@@ -114,6 +114,7 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
                             await this.client.docs.create({ namespace: repoNamesapce, data: { title: title, slug: uuidv4(), public: isPublic, body: message.text } });
                             vscode.window.showInformationMessage('创建文档成功！');
                             this.refresh();
+                            vscode.commands.executeCommand('workbench.action.closeActiveEditor');
                         } catch (error) {
                             vscode.window.showErrorMessage(`操作失败！${error}`);
                         }
