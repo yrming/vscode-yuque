@@ -1,3 +1,9 @@
+## 0.0.9 - 2021-11-30
+### Added
+- Support for editing document
+### Fixed
+- Fix delete button is displayed on the empty doc tree item
+
 ## 0.0.8 - 2021-11-26
 ### Added
 - Use different icons to distinguish whether the repository is public or private
