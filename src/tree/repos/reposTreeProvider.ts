@@ -1,13 +1,20 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
 import { v4 as uuidv4 } from 'uuid';
-import { YuqueClient, YuqueDoc, YuqueRepo, YuqueUserDetail } from '../../@types/type';
+import { RecentYuqueDoc, YuqueClient, YuqueDoc, YuqueRepo, YuqueUserDetail } from '../../@types/type';
 import { DocsTreeItem } from '../common/docsTreeItem';
 import { ReposTreeItem } from './ReposTreeItem';
+import { getHTMLContent } from '../../webview/addOrEditDoc';
+import YuqueSettings from '../../yuque/settings';
 
 enum AddOrEditEnum {
 	Add = 'Add',
     Edit = 'Edit'
+}
+
+enum PublicTextEnum {
+    Private = '仅自己可见（自己和知识库成员可见）',
+    Public = '互联网可见（互联网所有人可见）'
 }
 
 export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem> {
@@ -16,7 +23,7 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
 
     private repos?: YuqueRepo[]; 
 
-    constructor(private context: vscode.ExtensionContext, private client: YuqueClient, private user: YuqueUserDetail) {
+    constructor(private context: vscode.ExtensionContext, private client: YuqueClient, private user: YuqueUserDetail, private recentDocsChangeEventEmitter: vscode.EventEmitter<void>) {
         vscode.commands.registerCommand('yuque.repos.create', async () => {
             this._addOrEditRepo(AddOrEditEnum.Add);
         });
@@ -24,18 +31,51 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
         vscode.commands.registerCommand('yuque.repos.createDoc', async (treeItem: ReposTreeItem) => {
             const title = await vscode.window.showInputBox({ value: '', placeHolder: '请输入文档标题' });
             if (title) {
+                let publicVal = 0;
                 if (treeItem.isPublic) {
-                    const value = await vscode.window.showQuickPick(['仅自己可见（自己和知识库成员可见）', '互联网可见（互联网所有人可见）'], {
+                    const value = await vscode.window.showQuickPick([PublicTextEnum.Private, PublicTextEnum.Public], {
                         placeHolder: '请选择可见范围'
                     });
                     if (value) {
-                        const publicVal = value === '互联网可见（互联网所有人可见）' ? 1 : 0;
-                        this._createWebviewPanel(context, 'createDoc', title, publicVal, treeItem.namespace);
+                        publicVal = value === PublicTextEnum.Public ? 1 : 0;
                     }
-                } else {
-                    this._createWebviewPanel(context, 'createDoc', title, 0, treeItem.namespace);
                 }
-                
+                this._createWebviewPanel(context, 'createDoc', title, publicVal, treeItem.namespace);
+            }
+        });
+
+        vscode.commands.registerCommand('yuque.repos.editDoc', async (treeItem: DocsTreeItem) => {
+            try {
+                let docDetail = await client.docs.get({ namespace: treeItem.namespace, slug: treeItem.docId, data: { raw: 1 } });
+                if (docDetail.format === 'lakeboard' || docDetail.format === 'laketable' || docDetail.format === 'lakeshow' || docDetail.format === 'lakesheet' || docDetail.format === 'lakemind') {
+                    vscode.window.showWarningMessage(
+                        `抱歉，该文档的格式为".${docDetail.format}"，暂不支持编辑。`
+                    );
+                } else {
+                    const title = await vscode.window.showInputBox({ value: treeItem.label, placeHolder: '请输入文档标题' });
+                    if (title) {
+                        const repo = this.repos?.find(item => item.namespace === treeItem.namespace);
+                        let publicVal = 0;
+                        if (repo?.public) {
+                            const value = await vscode.window.showQuickPick([PublicTextEnum.Private, PublicTextEnum.Public], {
+                                placeHolder: '请选择可见范围'
+                            });
+                            if (value) {
+                                publicVal = value === PublicTextEnum.Public ? 1 : 0;
+                            }
+                        }
+                        const storeToRecentObj = {
+                            id: docDetail.id,
+                            title: title,
+                            namespace: treeItem.namespace || '',
+                            slug: docDetail.slug
+                        };
+                        this._createWebviewPanel(context, 'editDoc', title, publicVal, treeItem.namespace, docDetail.body, storeToRecentObj);
+                        recentDocsChangeEventEmitter.fire();
+                    }
+                }
+            } catch (error) {
+                vscode.window.showWarningMessage(`操作失败！${error}`);
             }
         });
 
@@ -101,18 +141,25 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
         }
     }
 
-    _createWebviewPanel (context: vscode.ExtensionContext, viewType: string, title: string, isPublic: number, repoNamesapce?: string) {
+    _createWebviewPanel (context: vscode.ExtensionContext, viewType: string, title: string, isPublic: number, repoNamesapce?: string, docStr?: string, storeToRecentObj?: RecentYuqueDoc) {
         const panel = vscode.window.createWebviewPanel(viewType, title, vscode.ViewColumn.One, {
             enableScripts: true
         });
-        panel.webview.html = this._getHTMLContent();
+        panel.webview.html = getHTMLContent(viewType, docStr);
         panel.webview.onDidReceiveMessage(
             async message => {
                 switch (message.command) {
                     case 'publish':
                         try {
-                            await this.client.docs.create({ namespace: repoNamesapce, data: { title: title, slug: uuidv4(), public: isPublic, body: message.text } });
-                            vscode.window.showInformationMessage('创建文档成功！');
+                            if (storeToRecentObj) {
+                                await this.client.docs.update({ namespace: repoNamesapce, id: storeToRecentObj.id, data: { title: title, public: isPublic, body: message.text } });
+                                const settings = YuqueSettings.instance;
+                                await settings.storeDocToRecentDocs(storeToRecentObj);
+                                this.recentDocsChangeEventEmitter.fire();
+                            } else {
+                                await this.client.docs.create({ namespace: repoNamesapce, data: { title: title, slug: uuidv4(), public: isPublic, body: message.text } });
+                            }
+                            vscode.window.showInformationMessage('操作成功！');
                             this.refresh();
                             vscode.commands.executeCommand('workbench.action.closeActiveEditor');
                         } catch (error) {
@@ -124,129 +171,6 @@ export class ReposTreeProvider implements vscode.TreeDataProvider<ReposTreeItem>
             undefined,
             context.subscriptions
         );
-    }
-
-    _getHTMLContent(title: string = 'Create Doc'): string {
-        const html = `
-            <!doctype html>
-            <html>
-                <head>
-                    <meta charset="utf-8"/>
-                    <title>${title}</title>
-                </head>
-                <style>
-                    .container {
-                        display: flex;
-                        min-height: 100vh;
-                    }
-                    .text-area-container {
-                        position: relative;
-                        flex: 1;
-                        display: flex;
-                        border-right: 1px solid #999;
-                        padding: 10px;
-                        background: var(--vscode-input-background);
-    
-                    }
-                    textarea:focus {
-                        outline: 0;
-                    }
-                    textarea {
-                        flex: 1;
-                        outline: none;
-                        resize: none;
-                        border: none;
-                        padding: 0;
-                        background-color: transparent;
-                        caret-color: #fff;
-                        font-size: 13px;
-                        font-family: var(--vscode-font-family);
-                        color: var(--vscode-input-foreground);
-                    }
-                    .publish-btn {
-                        position: fixed;
-                        left: 0;
-                        right: 50%;
-                        bottom: 25px;
-                        width: 100px;
-                        margin: 0 auto;
-                        background-color: var(--vscode-button-background);
-                        color: var(--vscode-button-foreground);
-                        font-family: var(--vscode-font-family);
-                        border-radius: 0px;
-                        border: 1px solid transparent;
-                        outline: none;
-                        padding: 4px 12px;
-                        font-size: 13px;
-                        line-height: 18px;
-                        white-space: nowrap;
-                        user-select: none;
-                    }
-                    button:hover {
-                        background-color: var(--vscode-button-hoverBackground);
-                        cursor: pointer;
-                    }
-                    .preview-container {
-                        flex: 1;
-                        padding: 10px;
-                        background: transparent;
-                    }
-                    .empty-container {
-                        width: 100%;
-                        height: 100%;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                    }
-                    .empty-container img {
-                        width: 120px;
-                        height: auto;
-                    }
-                </style>
-                <body>
-                    <div class="container">
-                        <div class="text-area-container">
-                            <textarea class="markdown" placeholder="# Hello World"></textarea>
-                            <button class="publish-btn">发布</button>
-                        </div>
-                        <div class="preview-container">
-                            <div class="empty-container">
-                                <img src="https://gw.alipayobjects.com/mdn/prod_resou/afts/img/A*Q-bIT76mSLUAAAAAAAAAAAAAARQnAQ" />
-                            </div>
-                        </div>
-                    </div>
-                    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-                    <script>
-                        const $markdownElem = document.querySelector('.markdown');
-                        $markdownElem.focus();
-                        $markdownElem.addEventListener('change', handleInput, false);
-                        $markdownElem.addEventListener('keyup', handleInput, false);
-                        $markdownElem.addEventListener('keypress', handleInput, false);
-                        $markdownElem.addEventListener('keydown', handleInput, false);
-
-                        function handleInput(e) {
-                            if (marked.parse($markdownElem.value)) {
-                                document.querySelector('.preview-container').innerHTML = marked.parse($markdownElem.value);
-                            } else {
-                                document.querySelector('.preview-container').innerHTML = '<div class="empty-container"><img src="https://gw.alipayobjects.com/mdn/prod_resou/afts/img/A*Q-bIT76mSLUAAAAAAAAAAAAAARQnAQ" /></div>'
-                            }
-                        }
-
-                        const vscode = acquireVsCodeApi();
-                        const $publishBtnElem = document.querySelector('.publish-btn');
-                        $publishBtnElem.addEventListener('click', function() {
-                            if ($markdownElem.value) {
-                                vscode.postMessage({
-                                    command: 'publish',
-                                    text: $markdownElem.value
-                                })
-                            }
-                        })
-                    </script>
-                </body>
-            </html>
-        `;
-        return html;
     }
 
     refresh(): void {

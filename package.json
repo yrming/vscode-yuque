@@ -61,6 +61,11 @@
                 "icon": "$(trash)"
             },
             {
+                "command": "yuque.repos.editDoc",
+                "title": "%yuque.commands.repos.editDoc.title%",
+                "icon": "$(edit)"
+            },
+            {
                 "command": "yuque.repos.deleteDoc",
                 "title": "%yuque.commands.repos.deleteDoc.title%",
                 "icon": "$(trash)"
@@ -171,8 +176,13 @@
                     "when": "view == yuque.repos && viewItem == repo"
                 },
                 {
-                    "command": "yuque.repos.deleteDoc",
+                    "command": "yuque.repos.editDoc",
                     "group": "inline@1",
+                    "when": "view == yuque.repos && viewItem == doc"
+                },
+                {
+                    "command": "yuque.repos.deleteDoc",
+                    "group": "inline@2",
                     "when": "view == yuque.repos && viewItem == doc"
                 }
             ]

@@ -14,7 +14,7 @@ export async function registerTrees(context: vscode.ExtensionContext, recentDocs
             const recentTreeProvider = new RecentTreeProvider(context, client, user, recentDocsChangeEventEmitter);
             vscode.window.registerTreeDataProvider("yuque.recent", recentTreeProvider);
 
-            const reposTreeProvider = new ReposTreeProvider(context, client, user);
+            const reposTreeProvider = new ReposTreeProvider(context, client, user, recentDocsChangeEventEmitter);
             vscode.window.registerTreeDataProvider("yuque.repos", reposTreeProvider);
 
             const groupsTreeProvider = new GroupsTreeProvider(context, client, user);
