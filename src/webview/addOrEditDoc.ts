@@ -5,6 +5,21 @@ export function getHTMLContent(title: string = '', docStr: string = '') {
             <head>
                 <meta charset="utf-8"/>
                 <title>${title}</title>
+                <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+                <script>
+                    MathJax = {
+                        tex: {
+                            inlineMath: [['$', '$'],
+                            ['\\(', '\\)']]
+                        },
+                        startup: {
+                            ready: function () {
+                                MathJax.startup.defaultReady();
+                            }
+                        }
+                    }
+                </script>
+                <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
             </head>
             <style>
                 .container {
@@ -78,7 +93,7 @@ export function getHTMLContent(title: string = '', docStr: string = '') {
             <body>
                 <div class="container">
                     <div class="text-area-container">
-                        <textarea class="markdown" placeholder="# Hello World">${docStr}</textarea>
+                        <textarea class="markdown" placeholder="# Hello World&#10&#10$$r = a(1-sinθ)$$">${docStr}</textarea>
                         <button class="publish-btn">发布</button>
                     </div>
                     <div class="preview-container">
@@ -97,8 +112,12 @@ export function getHTMLContent(title: string = '', docStr: string = '') {
                     $markdownElem.addEventListener('keydown', handleInput, false);
 
                     function handleInput(e) {
-                        if (marked.parse($markdownElem.value)) {
-                            document.querySelector('.preview-container').innerHTML = marked.parse($markdownElem.value);
+                        const value = marked.parse($markdownElem.value)
+                        if (value) {
+                            document.querySelector('.preview-container').innerHTML = value;
+                            typeof MathJax.texReset === 'function' && MathJax.texReset();
+                            typeof MathJax.typesetClear === 'function' && MathJax.typesetClear();
+                            typeof MathJax.typesetPromise === 'function' && MathJax.typesetPromise();
                         } else {
                             document.querySelector('.preview-container').innerHTML = '<div class="empty-container"><img src="https://gw.alipayobjects.com/mdn/prod_resou/afts/img/A*Q-bIT76mSLUAAAAAAAAAAAAAARQnAQ" /></div>'
                         }
