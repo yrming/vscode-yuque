@@ -1,3 +1,7 @@
+## 0.1.0 - 2021-12-13
+### Added
+- Support for displaying mathematical formulas
+
 ## 0.0.9 - 2021-11-30
 ### Added
 - Support for editing document
