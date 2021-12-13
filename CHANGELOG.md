@@ -1,3 +1,7 @@
+## 0.1.1 - 2021-12-13
+### Fixed
+- Fix the problem of rendering mathematical formulas
+
 ## 0.1.0 - 2021-12-13
 ### Added
 - Support for displaying mathematical formulas
