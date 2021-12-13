@@ -1,4 +1,4 @@
-export function getHTMLContent(title: string = '', docStr: string = '') {
+export function getHTMLContent(title: string = '', docStr: string = '', onlyPreview = false) {
     const html = `
         <!doctype html>
         <html>
@@ -92,7 +92,7 @@ export function getHTMLContent(title: string = '', docStr: string = '') {
             </style>
             <body>
                 <div class="container">
-                    <div class="text-area-container">
+                    <div class="text-area-container" style="${onlyPreview ? 'display: none' : ''}">
                         <textarea class="markdown" placeholder="# Hello World&#10&#10$$r = a(1-sinθ)$$">${docStr}</textarea>
                         <button class="publish-btn">发布</button>
                     </div>

@@ -1,8 +1,8 @@
 import { commands, window, ExtensionContext, EventEmitter, ViewColumn } from "vscode";
-import { marked } from 'marked';
 import { YuqueClient, YuqueDoc } from "../@types/type";
 import { registerTrees } from "../tree/common/registerTrees";
 import YuqueSettings from "../yuque/settings";
+import { getHTMLContent } from "../webview/addOrEditDoc";
 
 export function registerCommands(context: ExtensionContext, recentDocsChangeEventEmitter: EventEmitter<void>): void {
     const settings = YuqueSettings.instance;
@@ -49,7 +49,7 @@ export function registerCommands(context: ExtensionContext, recentDocsChangeEven
                 const panel = window.createWebviewPanel(docDetail.title, docDetail.title, ViewColumn.One, {
                     enableScripts: true
                 });
-                panel.webview.html = getHTMLContent(docDetail.title, docDetail.body);
+                panel.webview.html = getHTMLContent(docDetail.title, docDetail.body, true);
                 const obj = {
                     id: doc.id,
                     title: doc.title,
@@ -63,23 +63,4 @@ export function registerCommands(context: ExtensionContext, recentDocsChangeEven
             window.showWarningMessage(`操作失败！${error}`);
         }
     });
-}
-
-function getHTMLContent(title: string, body: string): string {
-    const bodyContent = marked.parse(body);
-    const html = `
-        <!doctype html>
-        <html>
-            <head>
-                <meta charset="utf-8"/>
-                <title>${title}</title>
-            </head>
-            <body style="width: 900px; margin: 0 auto;">
-                <div>
-                    ${bodyContent}
-                </div>
-            </body>
-        </html>
-    `;
-    return html;
 }
