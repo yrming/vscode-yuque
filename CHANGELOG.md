@@ -1,3 +1,7 @@
+## 0.1.3 - 2021-12-20
+### Fixed
+- Fix launch errors in remote ssh mode
+
 ## 0.1.1 - 2021-12-13
 ### Fixed
 - Fix the problem of rendering mathematical formulas
