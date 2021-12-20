@@ -3,7 +3,6 @@ import { RecentTreeProvider } from '../recent/recentTreeProvider';
 import { ReposTreeProvider } from '../repos/reposTreeProvider';
 import { GroupsTreeProvider } from '../groups/groupsTreeProvider';
 import { ProfileTreeProvider } from '../profile/profileTreeProvider';
-import { YuqueClient } from '../../@types/type';
 import { initClient } from '../../yuque/client';
 
 export async function registerTrees(context: vscode.ExtensionContext, recentDocsChangeEventEmitter: vscode.EventEmitter<void>): Promise<void> {
