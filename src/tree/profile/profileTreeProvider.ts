@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { YuqueUserDetail } from '../../@types/type';
-import { ProfileTreeItem } from './ProfileTreeItem';
+import { ProfileTreeItem } from './profileTreeItem';
 
 export class ProfileTreeProvider implements vscode.TreeDataProvider<ProfileTreeItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<ProfileTreeItem | undefined | void> = new vscode.EventEmitter<ProfileTreeItem | undefined | void>();

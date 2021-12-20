@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import { v4 as uuidv4 } from 'uuid';
 import { RecentYuqueDoc, YuqueClient, YuqueDoc, YuqueRepo, YuqueUserDetail } from '../../@types/type';
 import { DocsTreeItem } from '../common/docsTreeItem';
-import { ReposTreeItem } from './ReposTreeItem';
+import { ReposTreeItem } from './reposTreeItem';
 import { getHTMLContent } from '../../webview/addOrEditDoc';
 import YuqueSettings from '../../yuque/settings';
 

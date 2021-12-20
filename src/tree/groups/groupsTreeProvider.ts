@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { GroupsTreeItem } from './groupsTreeItem';
 import { downloadIcon } from '../common/treeItemIconPath';
 import { YuqueDoc, YuqueGroup, YuqueRepo, YuqueUserDetail } from '../../@types/type';
-import { ReposTreeItem } from '../repos/ReposTreeItem';
+import { ReposTreeItem } from '../repos/reposTreeItem';
 import { DocsTreeItem } from '../common/docsTreeItem';
 
 export class GroupsTreeProvider implements vscode.TreeDataProvider<GroupsTreeItem> {
