@@ -20,6 +20,7 @@ export function getHTMLContent(title: string = '', docStr: string = '', onlyPrev
                     }
                 </script>
                 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css" integrity="sha512-KUoB3bZ1XRBYj1QcH4BHCQjurAZnCO3WdrswyLDtp7BMwCw7dPZngSLqILf68SGgvnWHTD5pPaYrXi6wiRJ65g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             </head>
             <style>
                 .container {
@@ -96,7 +97,7 @@ export function getHTMLContent(title: string = '', docStr: string = '', onlyPrev
                         <textarea class="markdown" placeholder="# Hello World&#10&#10$$r = a(1-sinθ)$$">${docStr}</textarea>
                         <button class="publish-btn">发布</button>
                     </div>
-                    <div class="preview-container">
+                    <div class="preview-container markdown-body">
                         <div class="empty-container">
                             <img src="https://gw.alipayobjects.com/mdn/prod_resou/afts/img/A*Q-bIT76mSLUAAAAAAAAAAAAAARQnAQ" />
                         </div>
