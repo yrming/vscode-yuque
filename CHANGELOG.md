@@ -1,3 +1,7 @@
+## 0.1.4 - 2022-01-03
+### Added
+- Use github-markdown-css to render markdown
+
 ## 0.1.3 - 2021-12-20
 ### Fixed
 - Fix launch errors in remote ssh mode
