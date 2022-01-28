@@ -1,3 +1,7 @@
+## 0.1.5 - 2022-01-28
+### Fixed
+- Fix the background color of placeholder image
+
 ## 0.1.4 - 2022-01-03
 ### Added
 - Use github-markdown-css to render markdown
