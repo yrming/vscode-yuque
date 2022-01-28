@@ -87,8 +87,9 @@ export function getHTMLContent(title: string = '', docStr: string = '', onlyPrev
                     align-items: center;
                 }
                 .empty-container img {
-                    width: 120px;
+                    width: 100px;
                     height: auto;
+                    background-color: transparent !important;
                 }
             </style>
             <body>
