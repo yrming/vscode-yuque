@@ -1,3 +1,7 @@
+## 0.1.7 - 2022-01-29
+### Fixed
+- Fix width of doc area in browse mode
+
 ## 0.1.6 - 2022-01-29
 ### Fixed
 - Fix width of doc edit area and preview area
