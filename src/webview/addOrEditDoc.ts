@@ -98,7 +98,7 @@ export function getHTMLContent(title: string = '', docStr: string = '', onlyPrev
                         <textarea class="markdown" placeholder="# Hello World&#10&#10$$r = a(1-sinθ)$$">${docStr}</textarea>
                         <button class="publish-btn">发布</button>
                     </div>
-                    <div class="preview-container markdown-body">
+                    <div class="preview-container markdown-body" style="${onlyPreview ? 'width: 100vw' : ''}">
                         <div class="empty-container">
                             <img src="https://gw.alipayobjects.com/mdn/prod_resou/afts/img/A*Q-bIT76mSLUAAAAAAAAAAAAAARQnAQ" />
                         </div>
