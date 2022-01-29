@@ -29,7 +29,7 @@ export function getHTMLContent(title: string = '', docStr: string = '', onlyPrev
                 }
                 .text-area-container {
                     position: relative;
-                    flex: 1;
+                    width: 50vw;
                     display: flex;
                     border-right: 1px solid #999;
                     padding: 10px;
@@ -75,7 +75,7 @@ export function getHTMLContent(title: string = '', docStr: string = '', onlyPrev
                     cursor: pointer;
                 }
                 .preview-container {
-                    flex: 1;
+                    width: 50vw;
                     padding: 10px;
                     background: transparent;
                 }
