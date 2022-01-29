@@ -1,3 +1,7 @@
+## 0.1.6 - 2022-01-29
+### Fixed
+- Fix width of doc edit area and preview area
+
 ## 0.1.5 - 2022-01-28
 ### Fixed
 - Fix the background color of placeholder image
