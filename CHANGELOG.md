@@ -1,3 +1,7 @@
+## 0.1.8 - 2022-03-22
+### Fixed
+- Fix rendering in light mode
+
 ## 0.1.7 - 2022-01-29
 ### Fixed
 - Fix width of doc area in browse mode
