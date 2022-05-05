@@ -1,5 +1,5 @@
 export function getHTMLContent(title: string = '', docStr: string = '', onlyPreview = false) {
-    const html = `
+  const html = `
         <!doctype html>
         <html>
             <head>
@@ -137,7 +137,7 @@ export function getHTMLContent(title: string = '', docStr: string = '', onlyPrev
                         --color-attention-subtle: rgba(187,128,9,0.15);
                         --color-danger-fg: #f85149;
                     }
-                }      
+                }
             </style>
             <body>
                 <div class="container">
@@ -145,7 +145,9 @@ export function getHTMLContent(title: string = '', docStr: string = '', onlyPrev
                         <textarea class="markdown" placeholder="# Hello World&#10&#10$$r = a(1-sinθ)$$">${docStr}</textarea>
                         <button class="publish-btn">发布</button>
                     </div>
-                    <div class="preview-container markdown-body" style="${onlyPreview ? 'width: 100vw' : ''}">
+                    <div class="preview-container markdown-body" style="${
+                      onlyPreview ? 'width: 100vw' : ''
+                    }">
                         <div class="empty-container">
                             <img src="https://gw.alipayobjects.com/mdn/prod_resou/afts/img/A*Q-bIT76mSLUAAAAAAAAAAAAAARQnAQ" />
                         </div>
@@ -187,6 +189,6 @@ export function getHTMLContent(title: string = '', docStr: string = '', onlyPrev
                 </script>
             </body>
         </html>
-    `;
-    return html;
+    `
+  return html
 }

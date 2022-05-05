@@ -1,224 +1,226 @@
 {
-    "name": "yuque",
-    "displayName": "Yuque",
-    "description": "Yuque extension for Visual Studio Code",
-    "version": "0.1.8",
-    "engines": {
-        "vscode": "^1.61.0"
-    },
-    "categories": [
-        "Other"
+  "name": "yuque",
+  "displayName": "Yuque",
+  "description": "Yuque extension for Visual Studio Code",
+  "version": "0.1.8",
+  "engines": {
+    "vscode": "^1.61.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:yuque.welcome.initializing",
+    "onView:yuque.welcome.needsAuthentication",
+    "onView:yuque.welcome.recent",
+    "onView:yuque.welcome.repos",
+    "onView:yuque.welcome.groups",
+    "onView:yuque.welcome.profile"
+  ],
+  "icon": "resources/logo.png",
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "yuque.setToken",
+        "title": "%yuque.commands.setToken.title%"
+      },
+      {
+        "command": "yuque.logout",
+        "title": "%yuque.commands.logout.title%",
+        "icon": "$(log-out)"
+      },
+      {
+        "command": "yuque.clearRecent",
+        "title": "%yuque.commands.clearRecent.title%",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "yuque.repos.create",
+        "title": "%yuque.commands.repos.create.title%",
+        "icon": "$(add)"
+      },
+      {
+        "command": "yuque.repos.refresh",
+        "title": "%yuque.commands.repos.refresh.title%",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "yuque.repos.createDoc",
+        "title": "%yuque.commands.repos.createDoc.title%",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "yuque.repos.edit",
+        "title": "%yuque.commands.repos.edit.title%",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "yuque.repos.delete",
+        "title": "%yuque.commands.repos.delete.title%",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "yuque.repos.editDoc",
+        "title": "%yuque.commands.repos.editDoc.title%",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "yuque.repos.deleteDoc",
+        "title": "%yuque.commands.repos.deleteDoc.title%",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "yuque.groups.refresh",
+        "title": "%yuque.commands.groups.refresh.title%",
+        "icon": "$(refresh)"
+      }
     ],
-    "activationEvents": [
-        "onView:yuque.welcome.initializing",
-        "onView:yuque.welcome.needsAuthentication",
-        "onView:yuque.welcome.recent",
-        "onView:yuque.welcome.repos",
-        "onView:yuque.welcome.groups",
-        "onView:yuque.welcome.profile"
-    ],
-    "icon": "resources/logo.png",
-    "main": "./out/extension.js",
-    "contributes": {
-        "commands": [
-            {
-                "command": "yuque.setToken",
-                "title": "%yuque.commands.setToken.title%"
-            },
-            {
-                "command": "yuque.logout",
-                "title": "%yuque.commands.logout.title%",
-                "icon": "$(log-out)"
-            },
-            {
-                "command": "yuque.clearRecent",
-                "title": "%yuque.commands.clearRecent.title%",
-                "icon": "$(trash)"
-            },
-            {
-                "command": "yuque.repos.create",
-                "title": "%yuque.commands.repos.create.title%",
-                "icon": "$(add)"
-            },
-            {
-                "command": "yuque.repos.refresh",
-                "title": "%yuque.commands.repos.refresh.title%",
-                "icon": "$(refresh)"
-            },
-            {
-                "command": "yuque.repos.createDoc",
-                "title": "%yuque.commands.repos.createDoc.title%",
-                "icon": "$(new-file)"
-            },
-            {
-                "command": "yuque.repos.edit",
-                "title": "%yuque.commands.repos.edit.title%",
-                "icon": "$(edit)"
-            },
-            {
-                "command": "yuque.repos.delete",
-                "title": "%yuque.commands.repos.delete.title%",
-                "icon": "$(trash)"
-            },
-            {
-                "command": "yuque.repos.editDoc",
-                "title": "%yuque.commands.repos.editDoc.title%",
-                "icon": "$(edit)"
-            },
-            {
-                "command": "yuque.repos.deleteDoc",
-                "title": "%yuque.commands.repos.deleteDoc.title%",
-                "icon": "$(trash)"
-            },
-            {
-                "command": "yuque.groups.refresh",
-                "title": "%yuque.commands.groups.refresh.title%",
-                "icon": "$(refresh)"
-            }
-        ],
-        "viewsContainers": {
-            "activitybar": [
-                {
-                    "id": "yuque",
-                    "title": "%yuque.viewsContainers.activitybar.title%",
-                    "icon": "resources/logo.svg"
-                }
-            ]
-        },
-        "views": {
-            "yuque": [
-                {
-                    "id": "yuque.welcome.initializing",
-                    "name": "%yuque.views.welcome%",
-                    "when": "YuqueManagerStateContext != NeedsAuthentication && YuqueManagerStateContext != HasSetToken && YuqueManagerStateContext != DataLoaded"
-                },
-                {
-                    "id": "yuque.welcome.needsAuthentication",
-                    "name": "%yuque.views.welcome%",
-                    "when": "YuqueManagerStateContext == NeedsAuthentication"
-                },
-                {
-                    "id": "yuque.recent",
-                    "name": "%yuque.views.recent%",
-                    "when": "YuqueManagerStateContext == HasSetToken"
-                },
-                {
-                    "id": "yuque.repos",
-                    "name": "%yuque.views.repos%",
-                    "when": "YuqueManagerStateContext == HasSetToken"
-                },
-                {
-                    "id": "yuque.groups",
-                    "name": "%yuque.views.groups%",
-                    "when": "YuqueManagerStateContext == HasSetToken"
-                },
-                {
-                    "id": "yuque.profile",
-                    "name": "%yuque.views.profile%",
-                    "when": "YuqueManagerStateContext == HasSetToken"
-                }
-            ]
-        },
-        "viewsWelcome": [
-            {
-                "view": "yuque.welcome.initializing",
-                "contents": "%yuque.viewsWelcome.docs.contents.initializing%",
-                "when": "YuqueManagerStateContext != NeedsAuthentication && YuqueManagerStateContext != HasSetToken && YuqueManagerStateContext != DataLoaded"
-            },
-            {
-                "view": "yuque.welcome.needsAuthentication",
-                "contents": "%yuque.viewsWelcome.docs.contents.needsAuthentication%",
-                "when": "YuqueManagerStateContext == NeedsAuthentication"
-            }
-        ],
-        "menus": {
-            "view/title": [
-                {
-                    "command": "yuque.clearRecent",
-                    "group": "navigation",
-                    "when": "view == yuque.recent"
-                },
-                {
-                    "command": "yuque.repos.create",
-                    "group": "navigation@1",
-                    "when": "view == yuque.repos"
-                },
-                {
-                    "command": "yuque.repos.refresh",
-                    "group": "navigation@2",
-                    "when": "view == yuque.repos"
-                },
-                {
-                    "command": "yuque.logout",
-                    "group": "navigation",
-                    "when": "view == yuque.profile"
-                },
-                {
-                    "command": "yuque.groups.refresh",
-                    "group": "navigation@1",
-                    "when": "view == yuque.groups"
-                }
-            ],
-            "view/item/context": [
-                {
-                    "command": "yuque.repos.createDoc",
-                    "group": "inline@1",
-                    "when": "view == yuque.repos && viewItem == repo"
-                },
-                {
-                    "command": "yuque.repos.edit",
-                    "group": "inline@2",
-                    "when": "view == yuque.repos && viewItem == repo"
-                },
-                {
-                    "command": "yuque.repos.delete",
-                    "group": "inline@3",
-                    "when": "view == yuque.repos && viewItem == repo"
-                },
-                {
-                    "command": "yuque.repos.editDoc",
-                    "group": "inline@1",
-                    "when": "view == yuque.repos && viewItem == doc"
-                },
-                {
-                    "command": "yuque.repos.deleteDoc",
-                    "group": "inline@2",
-                    "when": "view == yuque.repos && viewItem == doc"
-                }
-            ]
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "yuque",
+          "title": "%yuque.viewsContainers.activitybar.title%",
+          "icon": "resources/logo.svg"
         }
+      ]
     },
-    "scripts": {
-        "vscode:prepublish": "yarn run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "pretest": "yarn run compile && yarn run lint",
-        "lint": "eslint src --ext ts",
-        "test": "node ./out/test/runTest.js"
+    "views": {
+      "yuque": [
+        {
+          "id": "yuque.welcome.initializing",
+          "name": "%yuque.views.welcome%",
+          "when": "YuqueManagerStateContext != NeedsAuthentication && YuqueManagerStateContext != HasSetToken && YuqueManagerStateContext != DataLoaded"
+        },
+        {
+          "id": "yuque.welcome.needsAuthentication",
+          "name": "%yuque.views.welcome%",
+          "when": "YuqueManagerStateContext == NeedsAuthentication"
+        },
+        {
+          "id": "yuque.recent",
+          "name": "%yuque.views.recent%",
+          "when": "YuqueManagerStateContext == HasSetToken"
+        },
+        {
+          "id": "yuque.repos",
+          "name": "%yuque.views.repos%",
+          "when": "YuqueManagerStateContext == HasSetToken"
+        },
+        {
+          "id": "yuque.groups",
+          "name": "%yuque.views.groups%",
+          "when": "YuqueManagerStateContext == HasSetToken"
+        },
+        {
+          "id": "yuque.profile",
+          "name": "%yuque.views.profile%",
+          "when": "YuqueManagerStateContext == HasSetToken"
+        }
+      ]
     },
-    "devDependencies": {
-        "@types/glob": "^7.1.4",
-        "@types/mocha": "^9.0.0",
-        "@types/node": "14.x",
-        "@types/vscode": "^1.61.0",
-        "@typescript-eslint/eslint-plugin": "^4.31.1",
-        "@typescript-eslint/parser": "^4.31.1",
-        "@vscode/test-electron": "^1.6.2",
-        "eslint": "^7.32.0",
-        "glob": "^7.1.7",
-        "mocha": "^9.1.1",
-        "typescript": "^4.4.3"
-    },
-    "dependencies": {
-        "@yuque/sdk": "^1.1.1",
-        "image-downloader": "^4.0.3",
-        "marked": "^4.0.3",
-        "uuid": "^8.3.2",
-        "vscode-nls": "^5.0.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/yrming/vscode-yuque"
-    },
-    "publisher": "YRM"
+    "viewsWelcome": [
+      {
+        "view": "yuque.welcome.initializing",
+        "contents": "%yuque.viewsWelcome.docs.contents.initializing%",
+        "when": "YuqueManagerStateContext != NeedsAuthentication && YuqueManagerStateContext != HasSetToken && YuqueManagerStateContext != DataLoaded"
+      },
+      {
+        "view": "yuque.welcome.needsAuthentication",
+        "contents": "%yuque.viewsWelcome.docs.contents.needsAuthentication%",
+        "when": "YuqueManagerStateContext == NeedsAuthentication"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "yuque.clearRecent",
+          "group": "navigation",
+          "when": "view == yuque.recent"
+        },
+        {
+          "command": "yuque.repos.create",
+          "group": "navigation@1",
+          "when": "view == yuque.repos"
+        },
+        {
+          "command": "yuque.repos.refresh",
+          "group": "navigation@2",
+          "when": "view == yuque.repos"
+        },
+        {
+          "command": "yuque.logout",
+          "group": "navigation",
+          "when": "view == yuque.profile"
+        },
+        {
+          "command": "yuque.groups.refresh",
+          "group": "navigation@1",
+          "when": "view == yuque.groups"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "yuque.repos.createDoc",
+          "group": "inline@1",
+          "when": "view == yuque.repos && viewItem == repo"
+        },
+        {
+          "command": "yuque.repos.edit",
+          "group": "inline@2",
+          "when": "view == yuque.repos && viewItem == repo"
+        },
+        {
+          "command": "yuque.repos.delete",
+          "group": "inline@3",
+          "when": "view == yuque.repos && viewItem == repo"
+        },
+        {
+          "command": "yuque.repos.editDoc",
+          "group": "inline@1",
+          "when": "view == yuque.repos && viewItem == doc"
+        },
+        {
+          "command": "yuque.repos.deleteDoc",
+          "group": "inline@2",
+          "when": "view == yuque.repos && viewItem == doc"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "prettier": "prettier --write ."
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.4",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "14.x",
+    "@types/vscode": "^1.61.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.1",
+    "@typescript-eslint/parser": "^4.31.1",
+    "@vscode/test-electron": "^1.6.2",
+    "eslint": "^7.32.0",
+    "glob": "^7.1.7",
+    "mocha": "^9.1.1",
+    "typescript": "^4.4.3",
+    "prettier": "^2.6.1"
+  },
+  "dependencies": {
+    "@yuque/sdk": "^1.1.1",
+    "image-downloader": "^4.0.3",
+    "marked": "^4.0.3",
+    "uuid": "^8.3.2",
+    "vscode-nls": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yrming/vscode-yuque"
+  },
+  "publisher": "YRM"
 }

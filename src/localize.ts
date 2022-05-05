@@ -1,3 +1,3 @@
-import * as nls from 'vscode-nls';
+import * as nls from 'vscode-nls'
 
-export const localize: nls.LocalizeFunc = nls.config()();
+export const localize: nls.LocalizeFunc = nls.config()()
