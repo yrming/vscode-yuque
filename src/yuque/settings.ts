@@ -23,13 +23,11 @@ export default class YuqueSettings {
   private secretStorage: SecretStorage
 
   public scheme: string
-  public tempRootPath: string
   public yuqueManagerState: YuqueManagerState
 
   constructor(private context: ExtensionContext) {
     this.scheme = 'yuque'
     this.secretStorage = context.secrets
-    this.tempRootPath = this.setTempRootPath()
     this.yuqueManagerState = YuqueManagerState.Initializing
   }
 
@@ -120,37 +118,6 @@ export default class YuqueSettings {
       await this.secretStorage.delete(SecretStorageYuqueRecentDocsKey)
     } catch (error) {
       console.log('Unable to delete yuque recent docs')
-    }
-  }
-
-  setTempRootPath(): string {
-    try {
-      const rootPath =
-        this.context.extensionMode === ExtensionMode.Test
-          ? path.join(__dirname, '..', '..', 'temp')
-          : path.join(this.context.globalStorageUri.fsPath, 'temp')
-
-      fs.rmdirSync(rootPath, { recursive: true })
-      fs.mkdirSync(rootPath, { recursive: true })
-      return rootPath
-    } catch (error) {
-      throw new Error('Unable to set tempRootPath.')
-    }
-  }
-
-  static removeTempEntry(entryPath: string): void {
-    try {
-      fs.unlinkSync(entryPath)
-    } catch (err) {
-      console.log('Unable to delete entry file.')
-    }
-  }
-
-  static clean(): void {
-    try {
-      fs.rmdirSync(this._instance.tempRootPath, { recursive: true })
-    } catch (error) {
-      console.log('Unable to clean temp path.')
     }
   }
 
